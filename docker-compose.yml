@@ -15,7 +15,7 @@ services:
     links:
       - app
     volumes:
-#      - .:/var/www/html
+      - .:/var/www/html
       - storage:/var/www/html/storage
   app:
     container_name: ${APP_NAME}-app
@@ -25,7 +25,7 @@ services:
       args:
         APP_ENV: $APP_ENV
     volumes:
-#      - .:/var/www/html
+      - .:/var/www/html
       - storage:/var/www/html/storage
     env_file: .env
 #    links:

@@ -8,9 +8,9 @@ PATH=/var/www/html/vendor/bin:$PATH
 
 if [ "$APP_ENV" = 'local' ]; then
   cd /var/www/html
- # composer install
+  composer install
  # php artisan migrate
-  #touch database/database.sqlite
+  touch database/database.sqlite
   if [ -d "storage/logs" ]; then rm -rf storage/logs/*; fi
 fi
 
