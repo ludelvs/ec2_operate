@@ -4,12 +4,13 @@ set -eu
 
 PATH=/var/www/html/vendor/bin:$PATH
 
-prehook /usr/local/bin/wait_db_connect.sh --
+#prehook /usr/local/bin/wait_db_connect.sh --
 
 if [ "$APP_ENV" = 'local' ]; then
   cd /var/www/html
   composer install
-  php artisan migrate
+ # php artisan migrate
+  touch database/database.sqlite
   if [ -d "storage/logs" ]; then rm -rf storage/logs/*; fi
 fi
 

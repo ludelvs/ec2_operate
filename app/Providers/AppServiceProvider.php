@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
         $is_ssl = strpos(env('APP_URL'), 'https') !== false ? true : false;
         \View::share('is_ssl', $is_ssl);
 
-        if (env('APP_ENV') != 'local') \URL::forceScheme('https');
+   //     if (env('APP_ENV') != 'local') \URL::forceScheme('https');
     }
 }

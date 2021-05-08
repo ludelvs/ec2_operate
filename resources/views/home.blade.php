@@ -13,14 +13,14 @@
                         <div class="row justify-content-center">
                             <button type="submit"  class="btn-lg btn btn-primary btn-block">EC2起動</button>
                         </div>
-                        @if($action == 'start') status code: {{ $statusCode }} @endif
+                        @if(!empty($action) && $action == 'start') status code: {{ $statusCode }} @endif
                     </form>
                     <form action="/stop_ec2" method="post">
                         @csrf
                         <div class="row justify-content-center mt-3">
                             <button type="submit"  class="btn-lg btn btn-primary btn-block">EC2停止</button>
                         </div>
-                        @if($action == 'stop') status code: {{ $statusCode }} @endif
+                        @if(!empty($action) && $action == 'stop') status code: {{ $statusCode }} @endif
                     </form>
                 </div>
             </div>

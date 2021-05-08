@@ -1,4 +1,4 @@
-FROM nginx:1.15.0
+FROM nginx:latest
 
 ARG APP_ENV
 ARG SET_REAL_IP_FROM

@@ -15,7 +15,7 @@ services:
     links:
       - app
     volumes:
-      - .:/var/www/html
+#      - .:/var/www/html
       - storage:/var/www/html/storage
   app:
     container_name: ${APP_NAME}-app
@@ -25,27 +25,27 @@ services:
       args:
         APP_ENV: $APP_ENV
     volumes:
-      - .:/var/www/html
+#      - .:/var/www/html
       - storage:/var/www/html/storage
     env_file: .env
-    links:
-      - db
-  db:
-    container_name: ${APP_NAME}-db
-    image: mysql:5.7
-    ports:
-      - ${DB_EXTERNAL_PORT}:3306
-    command: [
-      '--character-set-server=utf8mb4',
-      '--collation-server=utf8mb4_unicode_ci',
-      '--skip-character-set-client-handshake'
-    ]
-    volumes:
-      - database:/var/lib/mysql
-    env_file: .env
-  redis:
-    container_name: ${APP_NAME}-redis
-    image: redis
+#    links:
+#      - db
+# db:
+#   container_name: ${APP_NAME}-db
+#   image: mysql:5.7
+#   ports:
+#     - ${DB_EXTERNAL_PORT}:3306
+#   command: [
+#     '--character-set-server=utf8mb4',
+#     '--collation-server=utf8mb4_unicode_ci',
+#     '--skip-character-set-client-handshake'
+#   ]
+#   volumes:
+#     - database:/var/lib/mysql
+#   env_file: .env
+# redis:
+#   container_name: ${APP_NAME}-redis
+#   image: redis
 
 volumes:
   storage:
