@@ -50,4 +50,4 @@ services:
 volumes:
   storage:
     driver: 'local'
-  database:
+# database:

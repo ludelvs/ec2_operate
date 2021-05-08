@@ -57,9 +57,10 @@ COPY ./etc/docker/bin/wait_db_connect.sh /usr/local/bin/wait_db_connect.sh
 
 RUN chmod -R 777 /var/www/html/storage/*
 
-RUN if [ "$APP_ENV" != 'local' ]; then \
-      composer install --no-dev; \
-  fi
+#RUN if [ "$APP_ENV" != 'local' ]; then \
+      composer install --no-dev
+      RUN touch database/database.sqlite
+#  fi
 
 RUN if [ -n "$XDEBUG" ]; then \
        pecl install xdebug \
