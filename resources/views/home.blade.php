@@ -8,6 +8,9 @@
             <div class="card">
                 <div class="card-header">Dashboard</div>
                 <div class="card-body">
+                    <div class="mb-3">
+                        @if(!empty($state)) state: {{ $state }} @endif
+                    </div>
                     <form action="/start_ec2" method="post">
                         @csrf
                         <div class="row justify-content-center">

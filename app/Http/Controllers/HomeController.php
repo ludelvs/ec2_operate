@@ -28,7 +28,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $instanceIds = [env('INSTANCE_ID')];
+        $result = $this->ec2Client->describeInstances([
+            'InstanceIds' => $instanceIds,
+        ]);
+        $data = [
+            'state' => $result->toArray()['Reservations'][0]['Instances'][0]['State']['Name'],
+        ];
+
+        return view('home', $data);
     }
 
     public function start_ec2()
