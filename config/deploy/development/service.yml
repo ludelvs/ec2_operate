@@ -1,0 +1,138 @@
+family: carrier_payment_sample-development
+task_role_arn: ''
+network_mode: bridge
+container_definitions:
+- name: web
+  image: 172972874842.dkr.ecr.ap-northeast-1.amazonaws.com/carrier_payment_sample-web:{{tag}}
+  memory_reservation: 96
+  port_mappings:
+  - container_port: 80
+    host_port: 0
+    protocol: tcp
+  essential: true
+  readonly_root_filesystem: false
+  log_configuration: &log_configuration
+    log_driver: awslogs
+    options:
+      awslogs-group: ecs-carrier_payment_sample
+      awslogs-region: ap-northeast-1
+      awslogs-stream-prefix: carrier_payment_sample-development
+  volumes_from:
+    - source_container: app
+- name: app
+  image: 172972874842.dkr.ecr.ap-northeast-1.amazonaws.com/carrier_payment_sample-app:{{tag}}
+  memory_reservation: 96
+  essential: true
+  environment: &environment
+  - name: COLUMNS
+    value: 300
+  - name: LINES
+    value: 100
+  - name: AWS_REGION
+    value: ap-northeast-1
+  - name: APP_NAME
+    value: carrier_payment_sample
+  - name: APP_KEY
+    value: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQGP66hDurWxMRCzIdExu9r5AAAAlDCBkQYJKoZIhvcNAQcGoIGDMIGAAgEAMHsGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMYf5ptzdKwWJss19VAgEQgE71yG5bbDKD93N8DXYu/kULtt7iDK7/TIQ/267WqCZAFim58M4PQo9q20wYyOOCb7HVpVlq20V9aKS3j+KRIYJP1w99sAWSs9wD12EQHhs=}
+  - name: APP_DEBUG
+    value: true
+  - name: APP_LOG_LEVEL
+    value: debug
+  - name: APP_URL
+    value: https://carriertest.mpfront.com
+  - name: DB_CONNECTION
+    value: mysql
+  - name: LOG_CHANNEL
+    value: stack
+  - name: BROADCAST_DRIVER
+    value: log
+  - name: CACHE_DRIVER
+    value: redis
+  - name: SESSION_DRIVER
+    value: redis
+  - name: SESSION_LIFETIME
+    value: 120
+  - name: REDIS_HOST
+    value: mpfront-redis.host
+  - name: REDIS_DB
+    value: 1
+  - name: REDIS_PORT
+    value: 6379
+  - name: REDIS_READ_WRITE_TIMEOUT
+    value: 60
+  - name: MAIL_DRIVER
+    value: ses
+  - name: DEBUGBAR_ENABLED
+    value: true
+  - name: CACHE_PREFIX
+    value: carrier_payment_sample
+  - name: QUEUE_DRIVER
+    value: sync
+  - name: API_LOG_ERROR
+    value: /tmp/stdout
+  - name: API_LOG_COM
+    value: /tmp/stdout
+  - name: ACCOUNTING_CODE
+    value: K999999
+  - name: IP_CODE_TYPE_ONDEMAND
+    value: C9000000001
+  - name: IP_CODE_TYPE_CONTINUED
+    value: C9000000002
+  - name: IP_CODE_TYPE_ANYTIME
+    value: C9000000003
+  - name: SEC_HASH_CODE_TYPE_ONDEMAND_DEVELOPMENT
+    value: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQEp29SRlVS88MedXKpHcLlGAAAAhzCBhAYJKoZIhvcNAQcGoHcwdQIBADBwBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDgR5ZgkdquAZNhOVQIBEIBDvMnXlweFVvtJuh+9f5VasquvsF27inm8chp5bo/B4rTj9APx6dg86zoRxoL9wdGMHOq2a/zNLIXthA/yjvP0lMRUNQ==}
+  - name: SEC_HASH_CODE_TYPE_CONTINUED_DEVELOPMENT
+    value: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQEXeipb9nTNRTlTxB5GpoWKAAAAhzCBhAYJKoZIhvcNAQcGoHcwdQIBADBwBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDBZ8t46du1BZw0fRpwIBEIBDkU/6Ohlb9EmaY2wxb9NwiykZfollJWtOyvZipa+dehymLejCBgRl6j932BpfQji5I0Td5B+hZqBbeIhdZFTtrdZhBQ==}
+  - name: SEC_HASH_CODE_TYPE_ANYTIME_DEVELOPMENT
+    value: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQFHdrDbzVcZydCOFzdvIaEVAAAAhzCBhAYJKoZIhvcNAQcGoHcwdQIBADBwBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDLGFJ4mBuNzpTM7wPwIBEIBDjMwx+HJowld6wnbfdPAPC8b/EVpgEyQ95pM31iK262Sm00OrSgEhlQV+CW2OHelNMS6/fNJAY8MkuQm+Fekg2lymaA==}
+  - name: SEC_HASH_CODE_TYPE_ONDEMAND_PRODUCTION
+    value: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQHhjyYXkj/pR7ZwV2abUOE0AAAAhzCBhAYJKoZIhvcNAQcGoHcwdQIBADBwBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDDeptPimTjA2ouNbYgIBEIBDbwiek/tbykDNpk97iBcSPT1m+Rtk50jLcExwfbw4xvvsc0Kz13pxto+BhEZR1jvuvAwASy16zspXbgll2xjqfdedEg==}
+  - name: SEC_HASH_CODE_TYPE_CONTINUED_PRODUCTION
+    value: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQGyTU6N2TnZKc57ik2Rk1WcAAAAhzCBhAYJKoZIhvcNAQcGoHcwdQIBADBwBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDGXIugVzjAFgiWmFwgIBEIBDWgFmY8m26fXkm3BvJH3ROFcU4tM9DYcegtY+yHQSu2nfWdib6Tdcud/TX2e2LhJ+oaxXKxXT835dsfijSb5Eg4RlJw==}
+  - name: SEC_HASH_CODE_TYPE_ANYTIME_PRODUCTION
+    value: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQEm4FPNpj06CCXdtn+uqIu5AAAAhzCBhAYJKoZIhvcNAQcGoHcwdQIBADBwBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDJrgQv5ui67NmktDYwIBEIBDBsWi1ma0M7/wYbr/KJ03jlZwWx+f0msmiWtUlwpIhf7a2oeTCOsK7DW2/I67EzHX6Vmd/jmX4VkpK8a0Qi5RxIM9Xg==}
+  - name: ALLOW_IP_ADDRESS
+    value: 202.32.17.205,121.117.91.149,114.184.134.23,210.155.6.17,210.251.87.242,1.33.136.242,106.129.12.218,18.176.25.187
+  - name: CARRIER_SYSTEM_ENVIRONMENT_DEVELOPMENT
+    value: carrier.mpfront.com
+  - name: CARRIER_SYSTEM_ENVIRONMENT_PRODUCTION
+    value: carrier.payhub.jp
+  - name: OPENID_SECRET_DEFAULT
+    value:
+  - name: USER_NO_DEFAULT
+    value:
+  - name: PAYMENT_NUMBER_DEFAULT
+    value:
+  - name: CARRIER_DEFAULT
+    value: 03
+  - name: AMOUNT_DEFAULT
+    value: 1
+  - name: ACCOUNT_DAY_DEFAULT
+    value: 1
+  - name: PAYMENT_INTERVAL_DAY_DEFAULT
+    value: 1
+  - name: INTERVAL_TYPE_DAY_DEFAULT
+    value: 1
+  - name: PRODUCT_NAME_DEFAULT
+    value:
+  - name: CUSTOMER_NAME_DEFAULT
+    value:
+  - name: CUSTOMER_NAME_KANA_DEFAULT
+    value:
+  - name: CUSTOMER_TEL_DEFAULT
+    value:
+  - name: FUKA_DEFAULT
+    value:
+  - name: NOTE1_DEFAULT
+    value:
+  - name: NOTE2_DEFAULT
+    value:
+  - name: NOTE3_DEFAULT
+    value:
+  - name: ENDPOINT_TYPE_DEFAULT
+    value: 0
+  - name: CREDIT_LIMIT_ENSURE_RESPONSE_TYPE_DEFAULT
+    value:
+  readonly_root_filesystem: false
+  log_configuration: *log_configuration

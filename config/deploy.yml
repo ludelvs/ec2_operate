@@ -1,0 +1,49 @@
+auto_deploy:
+  - branch: develop
+    cluster: mpfront
+    service: carrier_payment_sample-development
+
+targets:
+  - name: dev-db-migrate
+    cluster: mpfront
+    run_task: carrier_payment_sample-migrate-development
+  - name: dev-deploy
+    cluster: mpfront
+    service: carrier_payment_sample-development
+
+clusters:
+  - name: mpfront
+    services:
+      carrier_payment_sample-development:
+        containers:
+          - name: web
+            build:
+              context: ../etc/docker/web
+              args:
+                APP_ENV: development
+                SET_REAL_IP_FROM: 172.30.0.0/16
+                SERVER_NAME: carriertest.mpfront.com
+          - name: app
+            build: &app_build_development
+              context: ..
+              dockerfile: ./etc/docker/app/Dockerfile
+              args:
+                APP_ENV: development
+                DB_HOST: mpfront-aurora-mysql.host
+                DB_PORT: 3306
+                DB_DATABASE: carrier_payment_sample
+                DB_USERNAME: carrier_payment_sample
+                DB_PASSWORD: ${AQICAHgdTg3yLpSVC8LAdQDXKO24c5UVC830K8pNOzO9IJVENQF3yA6ncnM9N634knXQK44lAAAAbjBsBgkqhkiG9w0BBwagXzBdAgEAMFgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMxPaaj0+O9ladg2wtAgEQgCuCFzHH+k5Rwy0llOQwrkTXGwne6hD4rjZmxI95TFFcOk0PAARmsbew2Y1+}
+        path: ./deploy/development/service.yml
+    run_tasks:
+      carrier_payment_sample-migrate-development:
+        containers:
+          - name: app
+            build: *app_build_development
+        path: ./deploy/development/service.yml
+        launch_type: ec2
+        desired_count: 1
+        container_overrides:
+          - name: app
+            command:
+              - /usr/local/bin/migrate.sh
